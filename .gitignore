@@ -1,4 +1,4 @@
 # Ignoring the files used to test the classes (not unittest)
 
-AirBnB_clone/test*.py
+test*.py
 __pycache__
