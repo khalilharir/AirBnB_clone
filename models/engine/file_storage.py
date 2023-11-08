@@ -6,6 +6,7 @@ It contains:
 """
 
 
+from models.base_model import BaseModel
 import json
 import os
 
@@ -21,7 +22,9 @@ class FileStorage:
 
     def all(self):
         """ This public instance method returns the dictionary that contains
-        the objects """ 
+        the objects """
+        for key in self.__objects.keys():
+            self.__objects[key] = BaseModel(**self.__objects[key])
         return self.__objects
 
     def new(self, obj):
@@ -45,4 +48,6 @@ class FileStorage:
         file (__file_path) exists) """
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r", encoding='utf-8') as f:
-                obj_dict = json.loads(f.read())
+                data = f.read()
+            if len(data) > 0:
+                self.__objects = json.loads(data)
