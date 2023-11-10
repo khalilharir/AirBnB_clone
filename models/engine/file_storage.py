@@ -8,7 +8,6 @@ It contains:
 
 from models.base_model import BaseModel
 import json
-import os
 
 
 class FileStorage:
@@ -23,8 +22,15 @@ class FileStorage:
     def all(self):
         """ This public instance method returns the dictionary that contains
         the objects """
+        from importlib import import_module
         for key in self.__objects.keys():
-            self.__objects[key] = BaseModel(**self.__objects[key])
+            class_name, id = key.split(".")
+            if class_name != 'BaseModel':
+                mod_name = import_module("models." + class_name.lower(), ".")
+                class_n = getattr(mod_name, class_name)
+                self.__objects[key] = class_n(**self.__objects[key])
+            else:
+                self.__objects[key] = BaseModel(**self.__objects[key])
         return self.__objects
 
     def new(self, obj):
@@ -46,6 +52,7 @@ class FileStorage:
     def reload(self):
         """ deserializes the JSON file to __objects (only if the JSON
         file (__file_path) exists) """
+        import os
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r", encoding='utf-8') as f:
                 data = f.read()

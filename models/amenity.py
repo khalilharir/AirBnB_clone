@@ -11,5 +11,5 @@ from models.base_model import BaseModel
 class Amenity(BaseModel):
     """ This is the Amenity class """
 
-    def __init__(self, name="", id=None, created_at=None, updated_at=None):
-        super().__init__(id, created_at, updated_at)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

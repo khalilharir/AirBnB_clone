@@ -11,6 +11,5 @@ from models.base_model import BaseModel
 class Review(BaseModel):
     """ This is the Amenity class """
 
-    def __init__(self, place_id="", user_id="", text="", id=None,
-                 created_at=None, updated_at=None):
-        super().__init__(id, created_at, updated_at)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
