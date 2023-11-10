@@ -22,15 +22,6 @@ class FileStorage:
     def all(self):
         """ This public instance method returns the dictionary that contains
         the objects """
-        from importlib import import_module
-        for key in self.__objects.keys():
-            class_name, id = key.split(".")
-            if class_name != 'BaseModel':
-                mod_name = import_module("models." + class_name.lower(), ".")
-                class_n = getattr(mod_name, class_name)
-                self.__objects[key] = class_n(**self.__objects[key])
-            else:
-                self.__objects[key] = BaseModel(**self.__objects[key])
         return self.__objects
 
     def new(self, obj):
@@ -58,3 +49,12 @@ class FileStorage:
                 data = f.read()
             if len(data) > 0:
                 self.__objects = json.loads(data)
+                from importlib import import_module
+                for key in self.__objects.keys():
+                    class_name, id = key.split(".")
+                    if class_name != 'BaseModel':
+                        mod_name = import_module("models." + class_name.lower(), ".")
+                        class_n = getattr(mod_name, class_name)
+                        self.__objects[key] = class_n(**self.__objects[key])
+                    else:
+                        self.__objects[key] = BaseModel(**self.__objects[key])
