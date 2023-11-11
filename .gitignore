@@ -1,4 +1,3 @@
 # Ignoring the files used to test the classes (not unittest)
 
-test*.py
 __pycache__
