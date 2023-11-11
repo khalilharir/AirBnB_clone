@@ -118,6 +118,38 @@ EOF  help  quit\n")
                 all_list.append(str(objs[obj]))
         print(all_list)
 
+    def do_update(self, line):
+        """ Updating attributes """
+        objs = models.storage.all()
+        if not line:
+            print("** class name missing **")
+            return
+        list_args = line.split()
+        if list_args[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        if len(list_args) < 2:
+            print("** instance id missing **")
+            return
+        id_search = 0
+        for obj in objs.keys():
+            cls_name, id = obj.split(".")
+            if cls_name == list_args[0] and id == list_args[1]:
+                inst = objs[obj]
+                id_search = 1
+                break
+        if id_search == 0:
+            print("** no instance found **")
+            return
+        if len(list_args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(list_args) < 4:
+            print("** value missing **")
+            return
+        setattr(inst, list_args[2], list_args[3])
+        inst.save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
