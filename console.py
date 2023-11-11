@@ -177,6 +177,16 @@ EOF  help  quit\n")
                             return
                     print("** no instance found **")
                     return
+                if list_args[1][0:7] == "destroy":
+                    inst_id = list_args[1][9:-2]
+                    for obj in HBNBCommand.objs.keys():
+                        cls_name, id = obj.split(".")
+                        if cls_name == list_args[0] and id == inst_id:
+                            del HBNBCommand.objs[obj]
+                            models.storage.save()
+                            return
+                    print("** no instance found **")
+                    return
         print(f"*** Unknown syntax: {line}")
 
 
