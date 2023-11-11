@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-""" This is the __init__ module creates a unique FileStorage instance for the
-    application
+"""This is the __init__ module creates a unique FileStorage instance for the
+application
 """
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ This is the base_model module it contains :
-    -BaseModel: class that defines all common attributes/methods for other
-                classes.
+-BaseModel: class that defines all common attributes/methods for other
+classes.
 """
 
 import models
@@ -10,7 +10,7 @@ from datetime import datetime
 
 class BaseModel:
     """ This is the BaseModel class
-        -It defines all common attributes/methods for other classes.
+    -It defines all common attributes/methods for other classes.
     """
 
     def __init__(self, *args, **kwargs):
@@ -39,21 +39,21 @@ class BaseModel:
 
     def __str__(self):
         """ This is the __str__ function it prints
-            [<class name>] (<self.id>) <self.__dict__>
+        [<class name>] (<self.id>) <self.__dict__>
         """
         str_base = f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
         return f"{str_base}"
 
     def save(self):
         """ updates the public instance attribute updated_at
-            with the current datetime
+        with the current datetime
         """
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
         """ returns a dictionary containing all keys/values
-            of __dict__ of the instance
+        of __dict__ of the instance
         """
         self.__dict__["created_at"] = self.created_at.strftime("%Y-%m-%dT%H:%M\
 :%S.%f")
