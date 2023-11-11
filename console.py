@@ -104,7 +104,7 @@ EOF  help  quit\n")
         all_list = []
         if not class_name:
             for obj in HBNBCommand.objs.keys():
-                all_list.append(str(objs[obj]))
+                all_list.append(str(HBNBCommand.objs[obj]))
             print(all_list)
             return
         if class_name not in HBNBCommand.classes:
@@ -186,6 +186,32 @@ EOF  help  quit\n")
                             models.storage.save()
                             return
                     print("** no instance found **")
+                    return
+                if list_args[1][0:6] == "update":
+                    update_args = list_args[1].split(", ")
+                    inst_id = update_args[0][8:-1]
+                    if len(inst_id) == 0:
+                        print("** instance id missing **")
+                        return
+                    if len(update_args) < 2:
+                        print("** attribute name missing **")
+                        return
+                    if len(update_args) < 3:
+                        print("** value missing **")
+                        return
+                    class_name = list_args[0]
+                    id_search = 0
+                    for obj in HBNBCommand.objs.keys():
+                        cls_name, id = obj.split(".")
+                        if cls_name == class_name and id == inst_id:
+                            inst = HBNBCommand.objs[obj]
+                            id_search = 1
+                            break
+                    if id_search == 0:
+                        print("** no instance found **")
+                        return
+                    setattr(inst, update_args[1][1:-1], update_args[2][1:-2])
+                    inst.save()
                     return
         print(f"*** Unknown syntax: {line}")
 
