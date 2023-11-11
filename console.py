@@ -151,6 +151,7 @@ EOF  help  quit\n")
         """ Default commands """
         all_list = []
         count = 0
+        list_args = line.split(".")
         for class_name in HBNBCommand.classes:
             if line == class_name + ".all()":
                 for obj in HBNBCommand.objs.keys():
@@ -166,6 +167,16 @@ EOF  help  quit\n")
                         count += 1
                 print(count)
                 return
+            if len(list_args) > 1:
+                if list_args[1][0:4] == "show":
+                    inst_id = list_args[1][6:-2]
+                    for obj in HBNBCommand.objs.keys():
+                        cls_name, id = obj.split(".")
+                        if cls_name == list_args[0] and id == inst_id:
+                            print(HBNBCommand.objs[obj])
+                            return
+                    print("** no instance found **")
+                    return
         print(f"*** Unknown syntax: {line}")
 
 
