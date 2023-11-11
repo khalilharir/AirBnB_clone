@@ -196,7 +196,7 @@ EOF  help  quit\n")
                     if len(update_args) < 2:
                         print("** attribute name missing **")
                         return
-                    if len(update_args) < 3:
+                    if len(update_args) < 3 and update_args[1][0] != '{':
                         print("** value missing **")
                         return
                     class_name = list_args[0]
@@ -210,7 +210,23 @@ EOF  help  quit\n")
                     if id_search == 0:
                         print("** no instance found **")
                         return
-                    setattr(inst, update_args[1][1:-1], update_args[2][1:-2])
+                    if update_args[1][0] != '{':
+                        setattr(inst, update_args[1][1:-1],
+                                update_args[2][1:-2])
+                    else:
+                        for i in range(1, len(update_args)):
+                            key, value = update_args[i].split(":")
+                            if i == 1:
+                                if len(update_args) > 2:
+                                    setattr(inst, key[2:-1], value[2:-1])
+                                if len(update_args) == 2:
+                                    setattr(inst, key[2:-1], value[2:-3])
+                            else:
+                                if i == len(update_args) - 1\
+                                and len(update_args) > 2:
+                                    setattr(inst, key[1:-1], value[1:-2])
+                                if i > 1 and i < len(update_args) - 1:
+                                    setattr(inst, key[1:-1], value[2:-1])
                     inst.save()
                     return
         print(f"*** Unknown syntax: {line}")
