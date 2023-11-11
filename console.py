@@ -15,6 +15,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     classes = ["BaseModel", "User", "State", "City", "Place", "Amenity",
                "Review"]
+    objs = models.storage.all()
 
     def do_EOF(self, line):
         """ Execute EOF command """
@@ -69,12 +70,11 @@ EOF  help  quit\n")
         if len(list_args) < 2:
             print("** instance id missing **")
             return
-        objs = models.storage.all()
         inst_id = list_args[1]
-        for obj in objs.keys():
+        for obj in HBNBCommand.objs.keys():
             cls_name, id = obj.split(".")
             if id == inst_id and cls_name == list_args[0]:
-                print(objs[obj])
+                print(HBNBCommand.objs[obj])
                 return
         print("** no instance found **")
 
@@ -90,37 +90,34 @@ EOF  help  quit\n")
         if len(list_args) < 2:
             print("** instance id missing **")
             return
-        objs = models.storage.all()
         inst_id = list_args[1]
-        for obj in objs.keys():
+        for obj in HBNBCommand.objs.keys():
             cls_name, id = obj.split(".")
             if id == inst_id and cls_name == list_args[0]:
-                del objs[obj]
+                del HBNBCommand.objs[obj]
                 models.storage.save()
                 return
         print("** no instance found **")
 
     def do_all(self, class_name):
         """ Print all string representations of instances """
-        objs = models.storage.all()
         all_list = []
         if not class_name:
-            for obj in objs.keys():
+            for obj in HBNBCommand.objs.keys():
                 all_list.append(str(objs[obj]))
             print(all_list)
             return
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        for obj in objs.keys():
+        for obj in HBNBCommand.objs.keys():
             cls_name, id = obj.split(".")
             if cls_name == class_name:
-                all_list.append(str(objs[obj]))
+                all_list.append(str(HBNBCommand.objs[obj]))
         print(all_list)
 
     def do_update(self, line):
         """ Updating attributes """
-        objs = models.storage.all()
         if not line:
             print("** class name missing **")
             return
@@ -132,10 +129,10 @@ EOF  help  quit\n")
             print("** instance id missing **")
             return
         id_search = 0
-        for obj in objs.keys():
+        for obj in HBNBCommand.objs.keys():
             cls_name, id = obj.split(".")
             if cls_name == list_args[0] and id == list_args[1]:
-                inst = objs[obj]
+                inst = HBNBCommand.objs[obj]
                 id_search = 1
                 break
         if id_search == 0:
@@ -149,6 +146,19 @@ EOF  help  quit\n")
             return
         setattr(inst, list_args[2], list_args[3])
         inst.save()
+
+    def default(self, line):
+        """ Default commands """
+        all_list = []
+        for class_name in HBNBCommand.classes:
+            if line == class_name + ".all()":
+                for obj in HBNBCommand.objs.keys():
+                    cls_name, id = obj.split(".")
+                    if cls_name == class_name:
+                        all_list.append(str(HBNBCommand.objs[obj]))
+                print(all_list)
+                return
+        print(f"*** Unknown syntax: {line}")
 
 
 if __name__ == '__main__':
