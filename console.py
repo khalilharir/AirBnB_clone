@@ -150,6 +150,7 @@ EOF  help  quit\n")
     def default(self, line):
         """ Default commands """
         all_list = []
+        count = 0
         for class_name in HBNBCommand.classes:
             if line == class_name + ".all()":
                 for obj in HBNBCommand.objs.keys():
@@ -157,6 +158,13 @@ EOF  help  quit\n")
                     if cls_name == class_name:
                         all_list.append(str(HBNBCommand.objs[obj]))
                 print(all_list)
+                return
+            if line == class_name + ".count()":
+                for obj in HBNBCommand.objs.keys():
+                    cls_name, id = obj.split(".")
+                    if cls_name == class_name:
+                        count += 1
+                print(count)
                 return
         print(f"*** Unknown syntax: {line}")
 
