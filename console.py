@@ -223,7 +223,7 @@ EOF  help  quit\n")
                                     setattr(inst, key[2:-1], value[2:-3])
                             else:
                                 if i == len(update_args) - 1\
-                                and len(update_args) > 2:
+                                   and len(update_args) > 2:
                                     setattr(inst, key[1:-1], value[1:-2])
                                 if i > 1 and i < len(update_args) - 1:
                                     setattr(inst, key[1:-1], value[2:-1])

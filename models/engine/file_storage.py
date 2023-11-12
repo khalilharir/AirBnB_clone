@@ -53,7 +53,9 @@ class FileStorage:
                 for key in self.__objects.keys():
                     class_name, id = key.split(".")
                     if class_name != 'BaseModel':
-                        mod_name = import_module("models." + class_name.lower(), ".")
+                        mod_name = import_module(
+                                                "models." + class_name.lower(),
+                                                ".")
                         class_n = getattr(mod_name, class_name)
                         self.__objects[key] = class_n(**self.__objects[key])
                     else:
