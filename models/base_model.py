@@ -55,9 +55,11 @@ class BaseModel:
         """ returns a dictionary containing all keys/values
         of __dict__ of the instance
         """
-        self.__dict__["created_at"] = self.created_at.strftime("%Y-%m-%dT%H:%M\
+        from copy import deepcopy
+        att_dict = deepcopy(self.__dict__)
+        att_dict["created_at"] = self.created_at.strftime("%Y-%m-%dT%H:%M\
 :%S.%f")
-        self.__dict__["updated_at"] = self.updated_at.strftime("%Y-%m-%dT%H:%M\
+        att_dict["updated_at"] = self.updated_at.strftime("%Y-%m-%dT%H:%M\
 :%S.%f")
-        self.__dict__["__class__"] = self.__class__.__name__
-        return self.__dict__
+        att_dict["__class__"] = self.__class__.__name__
+        return att_dict
