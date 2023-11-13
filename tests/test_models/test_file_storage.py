@@ -5,7 +5,7 @@ for testing the file_storage class
 
 
 import unittest
-from ...models.engine.file_storage import BaseModel
+from ...models.engine.file_storage import FileStorage
 
 
 class TestFileStorageClass(unittest.TestCase):
